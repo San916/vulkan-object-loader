@@ -1,0 +1,6 @@
+// Hint files help the Visual Studio IDE interpret Visual C++ identifiers
+// such as names of functions and macros.
+// For more information see https://go.microsoft.com/fwlink/?linkid=865984
+#define EVT_BUTTON(winid, func) wx__DECLARE_EVT1(wxEVT_BUTTON, winid, wxCommandEventHandler(func))
+#define wxDECLARE_DYNAMIC_CLASS(name) wxDECLARE_ABSTRACT_CLASS(name); static wxObject* wxCreateObject()
+#define wxDECLARE_DYNAMIC_CLASS(name) static wxObjectAllocatorAndCreator* ms_constructor; static const wxChar * ms_constructorProperties[]; static const int ms_constructorPropertiesCount; _DECLARE_DYNAMIC_CLASS(name)
