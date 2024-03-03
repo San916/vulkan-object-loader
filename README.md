@@ -59,3 +59,9 @@ Download the folder named `files-to-place-in-minimal`, then drag the contents of
  <img src="./images/root-folder-names.JPG" alt="Image of a c++ file contents" width="900">
 
 If you use different versions of libraries or have placed them in different locations, you may need to change some of the file paths in `Properties -> VC++ Directories -> Include Directories | Library Directories`, `Properties -> C/C++ -> Additional Include Directories`, and `Properties -> Linker ->  General -> Additional Library Directories`.
+
+Creators
+-----
+
+Made by San Kang, with mentorship from Samil Chai.
+This project was mostly made in 2020, with some revisions in 2024 for it to be uploaded on Github.
