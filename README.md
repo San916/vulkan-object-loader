@@ -9,7 +9,15 @@ This application contains a UI and file explorer made using <span style="color:w
 
  - Look around in a file tree/explorer created using <span style="color:white;font-weight:bold"> wxWidgets </span>
  - Select <span style="color:white;font-weight:bold"> .obj </span> and animated <span style="color:white;font-weight:bold"> .md5mesh/.md5anim </span> files to load into a window using<span style="color:white;font-weight:bold"> Vulkan </span>
+
+![object-loading-gif](https://github.com/San916/vulkan-object-loader/blob/main/gifs/object_loading.gif)
+
+ - Move around the <span style="color:white;font-weight:bold"> 3d Vulkan environment </span> using either <span style="color:white;font-weight:bold"> UI </span> or <span style="color:white;font-weight:bold"> mouse controls </span>
+
+![camera-manipulation-gif](https://github.com/San916/vulkan-object-loader/blob/main/gifs/camera_manipulation.gif)
+
  - View the <span style="color:white;font-weight:bold"> objects </span> loaded and select individual objects using a simple object hierarchy
+ - <span style="color:white;font-weight:bold"> Manipulate </span> any selected object
 
 ![object-manipulation-gif](https://github.com/San916/vulkan-object-loader/blob/main/gifs/object_manipulation.gif)
 
