@@ -97,13 +97,13 @@
 #include "wx/msgdlg.h"
 
 #ifdef __BORLANDC__
-    #pragma hdrstop
+#pragma hdrstop
 #endif
 
 // for all others, include the necessary headers (this file is usually all you
 // need because it includes almost all "standard" wxWidgets headers)
 #ifndef WX_PRECOMP
-    #include "wx/wx.h"
+#include "wx/wx.h"
 #endif
 
 //#include "wxVulkanTutorialApp.h"
@@ -151,18 +151,18 @@ using namespace std;
 // the application icon (under Windows it is in resources and even
 // though we could still include the XPM here it would be unused)
 #ifndef wxHAS_IMAGES_IN_RESOURCES
-    #include "../sample.xpm"
+#include "../sample.xpm"
 #endif
 
-string converter(uint8_t *str);
+string converter(uint8_t* str);
 
 // ----------------------------------------------------------------------------
 // private classes
 // ----------------------------------------------------------------------------
-wxImage *cellImageFolder = NULL;
-wxImage *cellImageFile = NULL;
-wxBitmap *cellBitmapFolder = NULL;
-wxBitmap *cellBitmapFile = NULL;
+wxImage* cellImageFolder = NULL;
+wxImage* cellImageFile = NULL;
+wxBitmap* cellBitmapFolder = NULL;
+wxBitmap* cellBitmapFile = NULL;
 
 class FileGridCellRenderer : public wxGridCellStringRenderer
 {
@@ -172,7 +172,7 @@ public:
 
 void FileGridCellRenderer::Draw(wxGrid& grid, wxGridCellAttr& attr, wxDC& dc, const wxRect& rect, int row, int col, bool isSelected)
 {
-    dc.DrawBitmap(*cellBitmapFile, rect.x+1, rect.y+1);
+    dc.DrawBitmap(*cellBitmapFile, rect.x + 1, rect.y + 1);
 }
 
 class FolderGridCellRenderer : public wxGridCellStringRenderer
@@ -183,7 +183,7 @@ public:
 
 void FolderGridCellRenderer::Draw(wxGrid& grid, wxGridCellAttr& attr, wxDC& dc, const wxRect& rect, int row, int col, bool isSelected)
 {
-    dc.DrawBitmap(*cellBitmapFolder, rect.x+2, rect.y+2);
+    dc.DrawBitmap(*cellBitmapFolder, rect.x + 2, rect.y + 2);
 }
 
 #include "minimal.h"
@@ -199,7 +199,7 @@ wxDECLARE_APP(MyApp);
 // Define a new frame type: this is going to be our main frame
 int gridRowAmount = 0;
 
-MyFrame *frame = NULL;
+MyFrame* frame = NULL;
 
 void MyFrame::OnItemExpanding(wxTreeEvent& event) {
 
@@ -222,15 +222,15 @@ const int ID_BUTTON_SHOW_OBJECT = 101;
 // handlers) which process them. It can be also done at run-time, but for the
 // simple menu events like this the static method is much simpler.
 wxBEGIN_EVENT_TABLE(MyFrame, wxFrame)
-    EVT_MENU(Minimal_Quit,  MyFrame::OnQuit)
-    EVT_MENU(Minimal_About, MyFrame::OnAbout)
-    EVT_GRID_CELL_LEFT_CLICK(MyFrame::OnGridLeftClick)
-    EVT_GRID_CELL_RIGHT_CLICK(MyFrame::OnGridRightClick)
-    EVT_LEFT_DOWN(MyFrame::OnMouseLeftClick)
-    EVT_TIMER(VulkanCanvas_Timer, MyFrame::OnVkTimer)
-    EVT_BUTTON(ID_BUTTON_HIDE_OBJECT, MyFrame::OnHideLeftClick)
-    EVT_BUTTON(ID_BUTTON_SHOW_OBJECT, MyFrame::OnShowLeftClick)
-    //EVT_KEY_DOWN(MyFrame::OnKeyPressed)
+EVT_MENU(Minimal_Quit, MyFrame::OnQuit)
+EVT_MENU(Minimal_About, MyFrame::OnAbout)
+EVT_GRID_CELL_LEFT_CLICK(MyFrame::OnGridLeftClick)
+EVT_GRID_CELL_RIGHT_CLICK(MyFrame::OnGridRightClick)
+EVT_LEFT_DOWN(MyFrame::OnMouseLeftClick)
+EVT_TIMER(VulkanCanvas_Timer, MyFrame::OnVkTimer)
+EVT_BUTTON(ID_BUTTON_HIDE_OBJECT, MyFrame::OnHideLeftClick)
+EVT_BUTTON(ID_BUTTON_SHOW_OBJECT, MyFrame::OnShowLeftClick)
+//EVT_KEY_DOWN(MyFrame::OnKeyPressed)
 wxEND_EVENT_TABLE()
 
 // Create a new application object: this macro will allow wxWidgets to create
@@ -260,7 +260,7 @@ bool MyApp::OnInit()
 
     // call the base class initialization method, currently it only parses a
     // few common command-line options but it could be do more in the future
-    if ( !wxApp::OnInit() )
+    if (!wxApp::OnInit())
         return false;
 
     // create the main application window
@@ -270,7 +270,7 @@ bool MyApp::OnInit()
     return true;
 }
 
-MyFrame *thisFrame;
+MyFrame* thisFrame;
 
 /**
  * Get the size of a file.
@@ -291,25 +291,25 @@ size_t getFileSize(const char* filename) {
 // frame constructor
 MyFrame::MyFrame(const wxString& title) : wxFrame(NULL, wxID_ANY, title, wxDefaultPosition, wxSize(WX_FRAME_WIDTH, WX_FRAME_HEIGHT)) {
     thisFrame = this;
-    
+
     //SetSizerAndFit(NULL);
     //Layout();
-    
+
     // set the frame icon
     SetIcon(wxICON(sample));
 
 #if wxUSE_MENUS
     // create a menu bar
-    wxMenu *fileMenu = new wxMenu;
+    wxMenu* fileMenu = new wxMenu;
 
     // the "About" item should be in the help menu
-    wxMenu *helpMenu = new wxMenu;
+    wxMenu* helpMenu = new wxMenu;
     helpMenu->Append(Minimal_About, "&About\tF1", "Show about dialog");
 
     fileMenu->Append(Minimal_Quit, "E&xit\tAlt-X", "Quit this program");
 
     // now append the freshly created menu to the menu bar...
-    wxMenuBar *menuBar = new wxMenuBar();
+    wxMenuBar* menuBar = new wxMenuBar();
     menuBar->Append(fileMenu, "&File");
     menuBar->Append(helpMenu, "&Help");
 
@@ -322,40 +322,40 @@ MyFrame::MyFrame(const wxString& title) : wxFrame(NULL, wxID_ANY, title, wxDefau
     aboutBtn->Bind(wxEVT_BUTTON, &MyFrame::OnAbout, this);
     sizer->Add(aboutBtn, wxSizerFlags().Center());
 #endif // wxUSE_MENUS/!wxUSE_MENUS
-    
-// a statusbar is the application sending the user a message
+
+    // a statusbar is the application sending the user a message
 #if wxUSE_STATUSBAR
     // create a status bar just for fun (by default with 1 pane only)
     CreateStatusBar(2);
     SetStatusText("Welcome to wxWidgets!");
 #endif // wxUSE_STATUSBAR
-    
-// Make label and text field here
-// label->setLabel() changes the label
 
-    // vulkan testing
+    // Make label and text field here
+    // label->setLabel() changes the label
+
+        // vulkan testing
     cout << "MyFrame::MyFrame: VK_ERROR_DEVICE_LOST: " << VK_ERROR_DEVICE_LOST << endl;
 
     // Initialize the main panel that contains every other panel
     mainPanel = new wxPanel(this, -1,
-                            wxPoint(0, 0),
-                            wxSize(WX_FRAME_WIDTH, WX_FRAME_HEIGHT));
+        wxPoint(0, 0),
+        wxSize(WX_FRAME_WIDTH, WX_FRAME_HEIGHT));
 
     //--------------------------------------------------------------------------
     // Upper Left Panel
     //--------------------------------------------------------------------------
 
     treePanel = new wxPanel(mainPanel, wxID_ANY,
-                            wxPoint(TREE_PANEL_X, TREE_PANEL_Y),
-                            wxSize(TREE_PANEL_W, TREE_PANEL_H));
-    
+        wxPoint(TREE_PANEL_X, TREE_PANEL_Y),
+        wxSize(TREE_PANEL_W, TREE_PANEL_H));
+
     tree = new MyTreeCtrl(treePanel, TreeTest_Ctrl,
         wxPoint(0, 0),
         wxSize(TREE_PANEL_W, TREE_PANEL_H), wxTR_DEFAULT_STYLE, ROOT_DIR_NAME, ROOT_HOME_FOLDER_NAME);
 
     //Expands all the nodes
     //tree->ExpandAll();
-    
+
     //--------------------------------------------------------------------------
     // Lower Left Panel
     //--------------------------------------------------------------------------
@@ -364,7 +364,8 @@ MyFrame::MyFrame(const wxString& title) : wxFrame(NULL, wxID_ANY, title, wxDefau
 #ifdef WIN32
     if (cellImageFolder->LoadFile(wxT("folder.bmp"))) {
         cellBitmapFolder = new wxBitmap(*cellImageFolder);
-    } else {
+    }
+    else {
         wxLogError(_T("folder.bmp didn't load, does it exist?"));
     }
 #else
@@ -379,7 +380,8 @@ MyFrame::MyFrame(const wxString& title) : wxFrame(NULL, wxID_ANY, title, wxDefau
 #ifdef WIN32
     if (cellImageFile->LoadFile(wxT("file.bmp"))) {
         cellBitmapFile = new wxBitmap(*cellImageFile);
-    } else {
+    }
+    else {
         wxLogError(_T("file.bmp didn't load, does it exist?"));
     }
 #else
@@ -392,16 +394,16 @@ MyFrame::MyFrame(const wxString& title) : wxFrame(NULL, wxID_ANY, title, wxDefau
 #endif
 
     fileListPanel = new wxPanel(mainPanel, wxID_ANY,
-                                         wxPoint(FILE_LIST_PANEL_X, FILE_LIST_PANEL_Y),
-                                         wxSize(FILE_LIST_PANEL_W, FILE_LIST_PANEL_H));
-    
+        wxPoint(FILE_LIST_PANEL_X, FILE_LIST_PANEL_Y),
+        wxSize(FILE_LIST_PANEL_W, FILE_LIST_PANEL_H));
+
     grid = new wxGrid(fileListPanel, wxID_ANY,
-                              wxPoint( 0, 0 ),
-                              wxSize(FILE_LIST_PANEL_W, FILE_LIST_PANEL_H));
+        wxPoint(0, 0),
+        wxSize(FILE_LIST_PANEL_W, FILE_LIST_PANEL_H));
     // this will create a grid and, by default, an associated grid
     // table for strings
-    grid->CreateGrid( 0, 0 );
-    
+    grid->CreateGrid(0, 0);
+
     grid->SetRowLabelSize(0);
 
     grid->AppendCols(2);
@@ -414,8 +416,8 @@ MyFrame::MyFrame(const wxString& title) : wxFrame(NULL, wxID_ANY, title, wxDefau
     grid->SetColSize(0, 20);
     grid->SetColSize(1, FILE_LIST_PANEL_W - 20);
 
-    DIR *dir;
-    struct dirent *ent;
+    DIR* dir;
+    struct dirent* ent;
     if ((dir = opendir(tree->curDirPathOnLeftPanel.c_str())) != NULL) {
         /* print all the files and directories within directory */
         int i = 0;
@@ -424,35 +426,35 @@ MyFrame::MyFrame(const wxString& title) : wxFrame(NULL, wxID_ANY, title, wxDefau
                 grid->AppendRows(1);
                 gridRowAmount++;
                 if (ent->d_type == DT_DIR) {
-//                    printf ("%s\n", ent->d_name);
+                    //                    printf ("%s\n", ent->d_name);
                     grid->SetCellRenderer(i, 0, new FolderGridCellRenderer);
                 }
                 else {
                     grid->SetCellRenderer(i, 0, new FileGridCellRenderer);
                 }
 
-                grid->SetCellValue( i, 1, ent->d_name);
+                grid->SetCellValue(i, 1, ent->d_name);
 
                 i++;
             }
-            
+
         }
-        closedir (dir);
-        
+        closedir(dir);
+
     }
     else {
         /* could not open directory */
-        perror ("");
+        perror("");
         //return EXIT_FAILURE;
         cout << "tree->curDirPathOnLeftPanel: " << tree->curDirPathOnLeftPanel << endl;
         while (1) {};
         exit(1);
-     }
+    }
 
     //--------------------------------------------------------------------------
     // Middle Panel
     //--------------------------------------------------------------------------
-    
+
     contentsPanel = new wxPanel(mainPanel, wxID_ANY,
         wxPoint(VULKAN_PANEL_X, VULKAN_PANEL_Y),
         wxSize(VULKAN_PANEL_W, VULKAN_PANEL_H));
@@ -467,7 +469,7 @@ MyFrame::MyFrame(const wxString& title) : wxFrame(NULL, wxID_ANY, title, wxDefau
     vulkanCanvas->Bind(wxEVT_RIGHT_DOWN, &MyFrame::OnMouseRightClick, this);
     vulkanCanvas->Bind(wxEVT_RIGHT_UP, &MyFrame::OnMouseRightClickEnd, this);
 
-    static const int INTERVAL = (1000/60); // milliseconds
+    static const int INTERVAL = (1000 / 60); // milliseconds
     m_timer = new wxTimer(this, VulkanCanvas_Timer);
     m_timer->Start(INTERVAL);
 
@@ -491,8 +493,8 @@ MyFrame::MyFrame(const wxString& title) : wxFrame(NULL, wxID_ANY, title, wxDefau
     // Upper Right Panel
     //--------------------------------------------------------------------------
     objectInfoPanel = new wxPanel(mainPanel, wxID_ANY,
-                              wxPoint(BUTTON_LIST_PANEL_X, BUTTON_LIST_PANEL_Y),
-                              wxSize(BUTTON_LIST_PANEL_W, BUTTON_LIST_PANEL_H));
+        wxPoint(BUTTON_LIST_PANEL_X, BUTTON_LIST_PANEL_Y),
+        wxSize(BUTTON_LIST_PANEL_W, BUTTON_LIST_PANEL_H));
 
     // wxTextCrtls, wxStaticTexts for the camera UI
     txtLblCurCameraTarget = new wxStaticText(objectInfoPanel, wxID_ANY, "Camera Target:",
@@ -597,24 +599,24 @@ void MyFrame::OnQuit(wxCommandEvent& WXUNUSED(event))
 void MyFrame::OnAbout(wxCommandEvent& WXUNUSED(event))
 {
     wxMessageBox(wxString::Format
-                 (
-                    "Welcome to %s!\n"
-                    "\n"
-                    "This is the minimal wxWidgets sample\n"
-                    "running under %s.",
-                    wxVERSION_STRING,
-                    wxGetOsDescription()
-                 ),
-                 "About wxWidgets minimal sample",
-                 wxOK | wxICON_INFORMATION,
-                 this);
+    (
+        "Welcome to %s!\n"
+        "\n"
+        "This is the minimal wxWidgets sample\n"
+        "running under %s.",
+        wxVERSION_STRING,
+        wxGetOsDescription()
+    ),
+        "About wxWidgets minimal sample",
+        wxOK | wxICON_INFORMATION,
+        this);
 }
 
 // Certain constants used in the functions below
 #define ID_LOAD_OBJECT 2001
 #define MAX_LEN_PATH 4096
 #define MAX_LEN_NAME 256
-#define PANNING_SPEED_MULTIPLIER 10
+#define PANNING_SPEED_MULTIPLIER 50
 #define ROTATING_SPEED_X (2 * M_PI / VULKAN_PANEL_VULKAN_CANVAS_W) // a movement from left to right = 2*PI = 360 deg
 #define ROTATING_SPEED_Y (M_PI / VULKAN_PANEL_VULKAN_CANVAS_H)  // a movement from top to bottom = PI = 180 deg
 #define ZOOM_SPEED_MULTIPLIER 2
@@ -670,10 +672,10 @@ void MyFrame::OnGridLeftClick(wxGridEvent& ev) {
 // Handle right clicking in a grid
 void MyFrame::OnGridRightClick(wxGridEvent& ev) {
     wxString cellName = grid->GetCellValue(ev.GetRow(), ev.GetCol());
-    void *data = &cellName;
-    
+    void* data = &cellName;
+
     wxMenu mnu;
-    mnu.SetClientData( data ); // only accepts void pointers
+    mnu.SetClientData(data); // only accepts void pointers
 
     // Create the option to load an object
     mnu.Append(ID_LOAD_OBJECT, "Load Object");
@@ -740,9 +742,9 @@ void MyFrame::OnMouseMotion(wxMouseEvent& ev) {
         glm::vec3 targetPoint = glm::vec3(vulkanCanvas->viewingX, vulkanCanvas->viewingY, vulkanCanvas->viewingZ);
         glm::vec3 camera_pos;
 
-        camera_pos.x = vulkanCanvas->cameraXBeforeDrag;
-        camera_pos.y = vulkanCanvas->cameraYBeforeDrag;
-        camera_pos.z = vulkanCanvas->cameraZBeforeDrag;
+        camera_pos.x = vulkanCanvas->cameraX;
+        camera_pos.y = vulkanCanvas->cameraY;
+        camera_pos.z = vulkanCanvas->cameraZ;
 
         glm::vec3 upVector = glm::vec3(0.0f, 1.0f, 0.0f);
 
@@ -751,19 +753,34 @@ void MyFrame::OnMouseMotion(wxMouseEvent& ev) {
         glm::vec3 ray_wor = glm::vec3(ray_wor_in_vec4.x, ray_wor_in_vec4.y, ray_wor_in_vec4.z);
         ray_wor = glm::normalize(ray_wor);
 
-        //cout << "x: " << ray_wor.x - vulkanCanvas->mouseDragRay.x;
-        //cout << " y: " << ray_wor.y - vulkanCanvas->mouseDragRay.y;
-        //cout << " z: " << ray_wor.z - vulkanCanvas->mouseDragRay.z << endl;
+        // Create cartesian form of plane corresponding to the normal vector (which is determined by the direction our camera is pointing)
+        glm::vec3 normVector = camera_pos - targetPoint;
+        normVector = glm::normalize(normVector);
 
-        // vulkanCanvas->mouseDragRay - ray_wor will give the direction that the camera
-        //     (and also where the camera is looking, as this describes a panning movement of the camera) has to move
-        vulkanCanvas->cameraX = vulkanCanvas->cameraXBeforeDrag + PANNING_SPEED_MULTIPLIER * (vulkanCanvas->mouseDragRay.x - ray_wor.x);
-        vulkanCanvas->cameraY = vulkanCanvas->cameraYBeforeDrag + PANNING_SPEED_MULTIPLIER * (vulkanCanvas->mouseDragRay.y - ray_wor.y);
-        vulkanCanvas->cameraZ = vulkanCanvas->cameraZBeforeDrag + PANNING_SPEED_MULTIPLIER * (vulkanCanvas->mouseDragRay.z - ray_wor.z);
+        // Takes the previous mouse pointing ray then subtracts it by the current mouse pointing ray
+        glm::vec3 dirToMove = vulkanCanvas->mouseDragRay - ray_wor;
 
-        vulkanCanvas->viewingX = vulkanCanvas->viewingXBeforeDrag + PANNING_SPEED_MULTIPLIER * (vulkanCanvas->mouseDragRay.x - ray_wor.x);
-        vulkanCanvas->viewingY = vulkanCanvas->viewingYBeforeDrag + PANNING_SPEED_MULTIPLIER * (vulkanCanvas->mouseDragRay.y - ray_wor.y);
-        vulkanCanvas->viewingZ = vulkanCanvas->viewingZBeforeDrag + PANNING_SPEED_MULTIPLIER * (vulkanCanvas->mouseDragRay.z - ray_wor.z);
+        // Sets the previous mouse pointing ray to the current one since this needs to be updated and wont be used for the rest of this function
+        vulkanCanvas->mouseDragRay = ray_wor;
+
+        //float d = dot(normVector, camera_pos);
+
+        // The projection of dirToMove onto the plane described by the normal vector
+        glm::vec3 projVec = dirToMove - dot(dirToMove, normVector) * normVector;
+        projVec = glm::normalize(projVec);
+
+        //std::cout << "x: " << projVec.x << endl;
+        //std::cout << "y: " << projVec.y << endl;
+        //std::cout << "z: " << projVec.z << endl;
+
+
+        vulkanCanvas->cameraX = vulkanCanvas->cameraX + (projVec.x) / PANNING_SPEED_MULTIPLIER;
+        vulkanCanvas->cameraY = vulkanCanvas->cameraY + (projVec.y) / PANNING_SPEED_MULTIPLIER;
+        vulkanCanvas->cameraZ = vulkanCanvas->cameraZ + (projVec.z) / PANNING_SPEED_MULTIPLIER;
+
+        vulkanCanvas->viewingX = vulkanCanvas->viewingX + (projVec.x) / PANNING_SPEED_MULTIPLIER;
+        vulkanCanvas->viewingY = vulkanCanvas->viewingY + (projVec.y) / PANNING_SPEED_MULTIPLIER;
+        vulkanCanvas->viewingZ = vulkanCanvas->viewingZ + (projVec.z) / PANNING_SPEED_MULTIPLIER;
 
         //cout << "cameraX: " << vulkanCanvas->cameraX;
         //cout << " cameraY: " << vulkanCanvas->cameraY;
@@ -999,32 +1016,32 @@ bool MyFrame::makeLowerLeftPanel(wxString fullPath) {
         delete grid;
         grid = NULL;
     }
-    
-    DIR *dir;
-    struct dirent *ent;
+
+    DIR* dir;
+    struct dirent* ent;
     if ((dir = opendir(fullPath.c_str())) == NULL) {
         return false;
     }
 
     grid = new wxGrid(fileListPanel, wxID_ANY,
-                      wxPoint( 0, 0 ),
-                      wxSize(FILE_LIST_PANEL_W, FILE_LIST_PANEL_H));
+        wxPoint(0, 0),
+        wxSize(FILE_LIST_PANEL_W, FILE_LIST_PANEL_H));
     // this will create a grid and, by default, an associated grid
     // table for strings
-    grid->CreateGrid( 0, 0 );
-    
+    grid->CreateGrid(0, 0);
+
     grid->SetRowLabelSize(0);
-    
+
     grid->AppendCols(2);
-    
+
     grid->EnableEditing(false);
-    
+
     grid->SetColLabelValue(0, _("")); // from wxSmith
     grid->SetColLabelValue(1, _("Name")); // from wxSmith
-    
+
     grid->SetColSize(0, 20);
     grid->SetColSize(1, FILE_LIST_PANEL_W - 20);
-    
+
     /* print all the files and directories within directory */
     int i = 0;
     while ((ent = readdir(dir)) != NULL) {
@@ -1038,18 +1055,18 @@ bool MyFrame::makeLowerLeftPanel(wxString fullPath) {
             else {
                 grid->SetCellRenderer(i, 0, new FileGridCellRenderer);
             }
-            grid->SetCellValue( i, 1, ent->d_name);
-         
+            grid->SetCellValue(i, 1, ent->d_name);
+
             i++;
         }
     }
-    closedir (dir);
+    closedir(dir);
     return true;
 }
 
-void MyFrame::getAllInfoFromFolder(vector<string> &names, vector<bool> &isFolder, string path, int *totalChunks, int *totalFiles, int *totalFolders, long *totalSize) {
-    DIR *dir;
-    struct dirent *ent;
+void MyFrame::getAllInfoFromFolder(vector<string>& names, vector<bool>& isFolder, string path, int* totalChunks, int* totalFiles, int* totalFolders, long* totalSize) {
+    DIR* dir;
+    struct dirent* ent;
     dir = opendir(path.c_str());
     while ((ent = readdir(dir)) != NULL) {
         if (ent->d_name[0] != '.') {
@@ -1096,7 +1113,7 @@ void MyFrame::OnVkTimer(wxTimerEvent& event) {
     //cout << "MyFrame::OnVkTimer(): tempZ = " << tempZ << endl;
 
     // If the selected object is in the object hierarchy, and is not the 'Scene' root object
-    if (vulkanCanvas->m_objects.size() - NUM_STARTING_OBJECTS > 0 && objHierarchy->selectedObject != -1){
+    if (vulkanCanvas->m_objects.size() - NUM_STARTING_OBJECTS > 0 && objHierarchy->selectedObject != -1) {
         if (objHierarchy->selectedObject != objHierarchy->prevSelectedObject) { // If there has been a new selected object, update the text controls to contain the new object's position
             txtCtrlPositionX->ChangeValue(wxString::Format(wxT("%f"), (vulkanCanvas->m_objects.at(NUM_STARTING_OBJECTS + objHierarchy->selectedObject)->offset3D.x)));
             txtCtrlPositionY->ChangeValue(wxString::Format(wxT("%f"), (vulkanCanvas->m_objects.at(NUM_STARTING_OBJECTS + objHierarchy->selectedObject)->offset3D.y)));

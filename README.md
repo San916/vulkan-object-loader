@@ -65,3 +65,11 @@ Creators
 
 Made by San Kang, with mentorship from Samil Chai.
 This project was mostly made in 2020, with some revisions in 2024 for it to be uploaded on Github.
+
+Resources
+-----
+Chalet.obj and corresponding texture files can be found on: 
+https://github.com/heitaoflower/vulkan-tutorial/tree/master/Tutorial29
+
+Bob Lamp files can be found on: 
+https://www.katsbits.com/download/models/
