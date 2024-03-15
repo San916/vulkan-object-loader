@@ -753,7 +753,7 @@ void MyFrame::OnMouseMotion(wxMouseEvent& ev) {
         glm::vec3 ray_wor = glm::vec3(ray_wor_in_vec4.x, ray_wor_in_vec4.y, ray_wor_in_vec4.z);
         ray_wor = glm::normalize(ray_wor);
 
-        // Create cartesian form of plane corresponding to the normal vector (which is determined by the direction our camera is pointing)
+        // Create a normal vector, which is determined by the direction our camera is pointing
         glm::vec3 normVector = camera_pos - targetPoint;
         normVector = glm::normalize(normVector);
 
@@ -763,16 +763,13 @@ void MyFrame::OnMouseMotion(wxMouseEvent& ev) {
         // Sets the previous mouse pointing ray to the current one since this needs to be updated and wont be used for the rest of this function
         vulkanCanvas->mouseDragRay = ray_wor;
 
-        //float d = dot(normVector, camera_pos);
-
-        // The projection of dirToMove onto the plane described by the normal vector
+        // Get the projection of dirToMove onto the plane described by the normal vector
         glm::vec3 projVec = dirToMove - dot(dirToMove, normVector) * normVector;
         projVec = glm::normalize(projVec);
 
-        //std::cout << "x: " << projVec.x << endl;
-        //std::cout << "y: " << projVec.y << endl;
-        //std::cout << "z: " << projVec.z << endl;
-
+        //std::cout << "x: " << projVec.x;
+        //std::cout << " y: " << projVec.y;
+        //std::cout << " z: " << projVec.z << endl;
 
         vulkanCanvas->cameraX = vulkanCanvas->cameraX + (projVec.x) / PANNING_SPEED_MULTIPLIER;
         vulkanCanvas->cameraY = vulkanCanvas->cameraY + (projVec.y) / PANNING_SPEED_MULTIPLIER;
