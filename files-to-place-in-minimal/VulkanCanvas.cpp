@@ -33,6 +33,9 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/hash.hpp>
 
+#include <glm/gtc/quaternion.hpp>
+#include <glm/gtx/quaternion.hpp>
+
 using namespace std;
 
 #include "minimal.h"
@@ -121,34 +124,12 @@ VulkanCanvas::VulkanCanvas(wxWindow* pParent,
 
     windowSize = size;
 
-    objSelected = -1;
-
     Bind(wxEVT_PAINT, &VulkanCanvas::OnPaint, this);
     Bind(wxEVT_SIZE, &VulkanCanvas::OnResize, this);
     std::vector<const char*> requiredExtensions = { "VK_KHR_surface", "VK_KHR_win32_surface" };
     //std::vector<const char*> requiredExtensions = { VK_KHR_SWAPCHAIN_EXTENSION_NAME };
 
-    cameraX = CAMERA_X;
-    cameraY = CAMERA_Y;
-    cameraZ = CAMERA_Z;
-
-    viewingX = LOOKAT_X;
-    viewingY = LOOKAT_Y;
-    viewingZ = LOOKAT_Z;
-
-    cameraXBeforeDrag = cameraX;
-    cameraYBeforeDrag = cameraY;
-    cameraZBeforeDrag = cameraZ;
-
-    cameraXBeforeRightDrag = cameraX;
-    cameraYBeforeRightDrag = cameraY;
-    cameraZBeforeRightDrag = cameraZ;
-
-    cameraDirection.x = cameraX - viewingX;
-    cameraDirection.y = cameraY - viewingY;
-    cameraDirection.z = cameraZ - viewingZ;
-
-    cameraDirection = glm::normalize(cameraDirection);
+    initCamera();
 
     upVector = glm::vec3(0.0f, 1.0f, 0.0f);
 
@@ -337,14 +318,22 @@ void VulkanCanvas::UpdateUniformBuffer(GameObject* gameObject, uint32_t currentI
         UniformBufferObject ubo = {};
 
         if (i >= 0 && i <= NUM_STARTING_OBJECTS - 1) {
-            ubo.model = glm::rotate(glm::mat4(1.0f), 0.0f, glm::vec3(1.0f, 1.0f, 1.0f));
-            ubo.model *= glm::translate(ubo.model, glm::vec3(0, 0, 0));
+            ubo.model = glm::translate(glm::mat4(1.0f), glm::vec3(0, 0, 0));
+            ubo.model = glm::rotate(ubo.model, 0.0f, glm::vec3(1.0f, 1.0f, 1.0f));
         }
         else {
-            ubo.model = glm::rotate(glm::mat4(1.0f), glm::radians(135.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-            //ubo.model = glm::rotate(glm::mat4(1.0f), glm::radians(0.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-            //ubo.model = m_objects[i]->rotationMat;
-            ubo.model *= glm::translate(ubo.model, m_objects[i]->offset3D);
+            //glm::vec3 rot = m_objects[i]->offset3DRot;
+
+            //glm::quat quaternionX = glm::angleAxis(glm::radians(rot.x), glm::vec3(1.0f, 0.0f, 0.0f));
+            //glm::quat quaternionY = glm::angleAxis(glm::radians(rot.y), glm::vec3(0.0f, 1.0f, 0.0f));
+            //glm::quat quaternionZ = glm::angleAxis(glm::radians(rot.z), glm::vec3(0.0f, 0.0f, 1.0f));
+
+            //glm::quat combinedQuaternion = quaternionZ * quaternionY * quaternionX;
+            glm::mat4 rotationMatrix = glm::toMat4(m_objects[i]->quaternion);
+            ubo.model = rotationMatrix * glm::mat4(1.0f);
+            ubo.model = glm::translate(glm::mat4(1.0f), m_objects[i]->offset3D) * ubo.model;
+
+            //m_objects[i]->quaternion = combinedQuaternion;
         }
 
         ubo.view = v_proj;
@@ -2553,7 +2542,7 @@ void VulkanCanvas::SetCameraView(glm::vec3 eye, glm::vec3 lookat, glm::vec3 up) 
 
     upVector = std::move(up);
 
-    m_proj = glm::lookAt(m_eye, m_lookAt, upVector);
+    v_proj = glm::lookAt(m_eye, m_lookAt, upVector);
 }
 
 glm::vec3 VulkanCanvas::getViewDir() {
@@ -2609,15 +2598,16 @@ void VulkanCanvas::ShowObject(string fileName, bool drawObject, bool showInScene
             &newMyObj->descriptorSets, &newMyObj->textureImageView, &newMyObj->textureSampler, &newMyObj->m_uniformBuffers);
 
         m_objects.push_back(newMyObj);
-
-
         UpdateUniformBuffer(NULL, 0);
         UpdateUniformBuffer(NULL, 1);
         UpdateUniformBuffer(NULL, 2);
         CreateCommandBuffers();
         CreateSemaphores();
+
+        newMyObj->createBoundingBox();
         //RecreateSwapchain();
     }
+    initObject(m_objects.size() - 1);
     if (showInSceneTree) {
         int indexLastSlash = -1;
         for (int i = fileName.size() - 1; i >= 0 && indexLastSlash == -1; i--) {
@@ -2629,4 +2619,71 @@ void VulkanCanvas::ShowObject(string fileName, bool drawObject, bool showInScene
         minimalMainFrame->objHierarchy->addObjItem(fileName.substr(indexLastSlash + 1), m_objects.size() - 1 - NUM_STARTING_OBJECTS);
         m_objects.at(m_objects.size() - 1)->sceneTreeName = fileName.substr(indexLastSlash + 1);
     }
+}
+
+void VulkanCanvas::initCamera() {
+    cameraX = CAMERA_X;
+    cameraY = CAMERA_Y;
+    cameraZ = CAMERA_Z;
+
+    viewingX = LOOKAT_X;
+    viewingY = LOOKAT_Y;
+    viewingZ = LOOKAT_Z;
+
+    cameraXBeforeDrag = cameraX;
+    cameraYBeforeDrag = cameraY;
+    cameraZBeforeDrag = cameraZ;
+
+    cameraXBeforeRightDrag = cameraX;
+    cameraYBeforeRightDrag = cameraY;
+    cameraZBeforeRightDrag = cameraZ;
+
+    cameraDirection.x = cameraX - viewingX;
+    cameraDirection.y = cameraY - viewingY;
+    cameraDirection.z = cameraZ - viewingZ;
+
+    cameraDirection = glm::normalize(cameraDirection);
+
+    printCameraInfo();
+}
+
+void VulkanCanvas::initObject(int index) {
+    m_objects.at(index)->offset3D = glm::vec3(0.0f, 0.0f, 0.0f);
+    m_objects.at(index)->offset3DRot = glm::vec3(0.0f, 0.0f, 0.0f);
+    m_objects.at(index)->quaternion = glm::quat(0.0f, 0.0f, 0.0f, 0.0f);
+
+    m_objects.at(index)->translationVelocity = glm::vec3(0.0f, 0.0f, 0.0f);
+    m_objects.at(index)->angularVelocity = glm::vec3(0.0f, 0.0f, 0.0f);
+    m_objects.at(index)->acceleration = glm::vec3(0.0f, -0.01f, 0.0f);
+    m_objects.at(index)->objectDensity = 1.0f;
+
+    if (m_objects.at(index)->isObjFile()) {
+        ((MyObject* )m_objects.at(index))->createBoundingBox();
+    }
+}
+
+void VulkanCanvas::printCameraInfo() {
+    cout << "printCameraInfo(): -------------------------------" << endl;
+
+    cout << "cameraX: " << cameraX << endl;
+    cout << "cameraY: " << cameraY << endl;
+    cout << "cameraZ: " << cameraZ << endl;
+
+    cout << "viewingX: " << viewingX << endl;
+    cout << "viewingY: " << viewingY << endl;
+    cout << "viewingZ: " << viewingZ << endl;
+
+    cout << "cameraXBeforeDrag: " << cameraXBeforeDrag << endl;
+    cout << "cameraYBeforeDrag: " << cameraYBeforeDrag << endl;
+    cout << "cameraZBeforeDrag: " << cameraZBeforeDrag << endl;
+
+    cout << "cameraXBeforeRightDrag: " << cameraXBeforeRightDrag << endl;
+    cout << "cameraYBeforeRightDrag: " << cameraYBeforeRightDrag << endl;
+    cout << "cameraZBeforeRightDrag: " << cameraZBeforeRightDrag << endl;
+
+    cout << "cameraDirection.x: " << cameraDirection.x << endl;
+    cout << "cameraDirection.y: " << cameraDirection.y << endl;
+    cout << "cameraDirection.z: " << cameraDirection.z << endl;
+
+    cout << "printCameraInfo(): XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX" << endl;
 }

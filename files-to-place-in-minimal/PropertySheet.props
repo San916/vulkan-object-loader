@@ -3,8 +3,8 @@
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
-    <IncludePath>$(WindowsSDK_IncludePath);$(VC_IncludePath);.\..\..\..\glfw-3.4.bin.WIN64\include;.\..\..\..\glm;C:\VulkanSDK\1.3.275.0\Include;.\..\..\..\stb-master;.\..\..\..\glfw-3.4.bin.WIN64;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\VulkanSDK\1.3.275.0\Lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(WindowsSDK_IncludePath);$(VC_IncludePath);.\..\..\..\glfw-3.4.bin.WIN64\include;.\..\..\..\glm;C:\VulkanSDK\1.3.280.0\Include;.\..\..\..\stb-master;.\..\..\..\glfw-3.4.bin.WIN64;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\VulkanSDK\1.3.280.0\Lib;$(LibraryPath)</LibraryPath>
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(wxIntRootDir)</OutDir>
     <IntDir>$(wxIntRootDir)$(ProjectName)\</IntDir>
@@ -13,12 +13,12 @@
   </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile>
-      <AdditionalIncludeDirectories>.\..\..\lib\$(wxOutDirName)\$(wxIncSubDir);.\..\..\include;.;.\..\..\samples;.\..\..\..\stb-master;.\..\..\..\glfw-3.4.bin.WIN64\include;.\..\..\..\glm;C:\VulkanSDK\1.3.275.0\Include;.\;.\..\..\..\;.\..\..\..\boost_1_84_0;.\..\..\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\..\..\lib\$(wxOutDirName)\$(wxIncSubDir);.\..\..\include;.;.\..\..\samples;.\..\..\..\stb-master;.\..\..\..\glfw-3.4.bin.WIN64\include;.\..\..\..\glm;C:\VulkanSDK\1.3.275.0\Include;.\;.\..\..\..\;.\..\..\..\boost_1_85_0;.\..\..\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <WarningLevel>Level4</WarningLevel>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>.\..\..\lib\$(wxOutDirName);.\..\..\..\boost_1_84_0\stage\lib;.\..\..\..\glfw-3.4.bin.WIN64\lib-vc2022;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>.\..\..\lib\$(wxOutDirName);.\..\..\..\boost_1_85_0\stage\lib;.\..\..\..\glfw-3.4.bin.WIN64\lib-vc2022;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>wxmsw$(wxShortVersionString)ud_core.lib;wxbase$(wxShortVersionString)ud.lib;wxtiffd.lib;wxjpegd.lib;wxpngd.lib;wxzlibd.lib;wxregexud.lib;wxexpatd.lib;kernel32.lib;user32.lib;gdi32.lib;comdlg32.lib;winspool.lib;winmm.lib;shell32.lib;shlwapi.lib;comctl32.lib;ole32.lib;oleaut32.lib;uuid.lib;rpcrt4.lib;advapi32.lib;version.lib;wsock32.lib;wininet.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>

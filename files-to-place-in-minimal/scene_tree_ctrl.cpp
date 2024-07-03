@@ -104,5 +104,5 @@ void SceneTreeCtrl::OnSelChanging(wxTreeEvent& event) {
     prevSelectedObject = selectedObject;
     selectedObject = objID;
 
-    //cout << "SceneTreeCtrl::OnSelChanging(): selectedObject: " << selectedObject << endl;
+    cout << "SceneTreeCtrl::OnSelChanging(): selectedObject: " << selectedObject << endl;
 }

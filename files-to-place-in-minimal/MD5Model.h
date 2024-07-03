@@ -105,10 +105,11 @@ public:
     MD5Animation    m_Animation; // moved from private
     JointList       m_Joints;    // moved from private
 
+    int                 m_iNumMeshes;
+
 private:
     int                 m_iMD5Version;
     int                 m_iNumJoints;
-    int                 m_iNumMeshes;
 
     bool                m_bHasAnimation;
 

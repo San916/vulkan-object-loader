@@ -3,25 +3,24 @@ An object loader capable of loading 3D objects and animations using Vulkan.
 
 Overview
 --------
-This application contains a UI and file explorer made using **wxWidgets** which can be used to select and load 3d models using **Vulkan**
+<h3> The user can: </h3>
 
-<h3> The user is able to </h3>
-
- - Look around in a file tree/explorer created using **wxWidgets**
- - Select **.obj** and animated **.md5mesh/.md5anim** files to load into a window using **Vulkan**
+ - Load 3D **.obj** and animated **.md5mesh/.md5anim** files from a file tree made with **wxWidgets**
 
 ![object-loading-gif](https://github.com/San916/vulkan-object-loader/blob/main/gifs/object_loading.gif)
 
- - Move around the **3d Vulkan environment** using either **UI** or **mouse controls**
+ - Move around the **3D environment** using either **UI** or **mouse controls**
+ - **Manipulate objects** using the UI controls, with **mouse picking** for object selection
 
-![camera-manipulation-gif](https://github.com/San916/vulkan-object-loader/blob/main/gifs/camera_manipulation.gif)
+![object-and-camera-manipulation-gif](https://github.com/San916/vulkan-object-loader/blob/main/gifs/object_camera_manipulation.gif)
 
- - View the **objects** loaded and select individual objects using a simple object hierarchy
- - **Manipulate** any selected object
+- Simulate **rigid body physics** using a **physics engine built from scratch** (physics currently works on .obj files, .md5 files are a WIP)
+    - Cube bouncing on a plane ![cube-bouncing-demonstration-gif](https://github.com/San916/vulkan-object-loader/blob/main/gifs/physics_1.gif)
+    - Cubes stacking on each other ![cube-stacking-demonstration-gif](https://github.com/San916/vulkan-object-loader/blob/main/gifs/physics_2.gif)
+    - Cubes colliding with each other ![cube-collision-demonstration-gif](https://github.com/San916/vulkan-object-loader/blob/main/gifs/physics_3.gif)
+    - And many other rigid-body interactions!
 
-![object-manipulation-gif](https://github.com/San916/vulkan-object-loader/blob/main/gifs/object_manipulation.gif)
-
-How to Install
+Setup
 --------
 
 <h3> Installing the libraries </h3>
@@ -45,12 +44,12 @@ How to Install
 
 <h3> Setting up the solution </h3>
 
-Download the folder named `files-to-place-in-minimal`, then drag the contents of the folder into `wxWidgets-3.2.4\samples\minimal` (not the actual folder itself), then open up `wxWidgets-3.2.4\samples\minimal\minimal_vc15.sln`.
+Drag the contents of the folder named `files-to-place-in-minimal` into `wxWidgets-3.2.4\samples\minimal`, then open up `wxWidgets-3.2.4\samples\minimal\minimal_vc15.sln`.
 
  - At the top of Visual Studio, go into `View -> Other Windows -> Property Manager`
  - In the `Property Manager`, drop down `minimal` and right-click `Debug|x64`, select `Add Existing Property Sheet...` and select the file `PropertySheet.props`
  - Go into `minimal -> Properties -> General -> C++ Language Stantard` while in the `Debug x64` configuration, and select the option with `C++17`
- - At the top of the `Solution Explorer`, select `Show All Files`, right click every file shown in the image below, and select `Include In Project`
+ - At the top of the `Solution Explorer`, select `Show All Files`, right click every file shown in the image below (these are all the relevant files), and select `Include In Project`
 
 <img src="./images/solution-explorer.JPG" alt="Image of a Visual Studio Solution Explorer" height="700">
 
@@ -60,11 +59,17 @@ Download the folder named `files-to-place-in-minimal`, then drag the contents of
 
 If you use different versions of libraries or have placed them in different locations, you may need to change some of the file paths in `Properties -> VC++ Directories -> Include Directories | Library Directories`, `Properties -> C/C++ -> Additional Include Directories`, and `Properties -> Linker ->  General -> Additional Library Directories`.
 
+Controls
+-----
+- Scrollwheel: Camera zooming
+- Left click: Camera panning
+- Right click: Camera rotating (around the camera target)
+- Shift + Left click: Object selection
+
 Creators
 -----
 
-Made by San Kang, with mentorship from Samil Chai.
-This project was mostly made in 2020, with some revisions in 2024 for it to be uploaded on Github.
+Made by San Kang
 
 Resources
 -----

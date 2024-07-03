@@ -172,12 +172,15 @@ public:
 
     vector<GameObject*> m_objects;
 
+    void printCameraInfo();
     glm::vec3 getRightVector();
     glm::vec3 getViewDir();
     void SetCameraView(glm::vec3 eye, glm::vec3 lookat, glm::vec3 up);
     void SwapAndShiftInIndexBuffer(vector<int>& tempIndexBuffer, int faceIndex);
     void DrawFrame();
     void ShowObject(string fileName, bool drawObject, bool showInSceneTree);
+    void initCamera();
+    void VulkanCanvas::initObject(int index);
 
 private:
     void UpdateVertexBuffer(MyObject* object, VkDeviceSize bufferSize);
@@ -238,8 +241,6 @@ private:
     VkSemaphore m_imageAvailableSemaphore;
     VkSemaphore m_renderFinishedSemaphore;
     bool m_vulkanInitialized;
-
-    int objSelected;
 
     int md5FrameCounter;
 };

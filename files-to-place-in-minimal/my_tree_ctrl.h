@@ -71,7 +71,7 @@ public:
 
     MyTreeCtrl(wxWindow* parent, const wxWindowID id,
         const wxPoint& pos, const wxSize& size,
-        long style, string rootParentDirPathOnLeftPanel, string rootNameOnly);
+        long style, string rootParentDirPathOnLeftPanel, string rootNameOnly, VulkanCanvas* vulkanCanvas);
 
     virtual ~MyTreeCtrl() {}
 
@@ -81,11 +81,10 @@ public:
     void OnSelChanged(wxTreeEvent& event);
     void OnSelChanging(wxTreeEvent& event);
 
-    void refreshLowerLeftPanel(wxTreeItemId itemId, bool fromSelectItem);
-
 public:
     string rootNameOnly;
     string rootParentDirPathOnLeftPanel;
+    VulkanCanvas *vulkanCanvas;
 
     string curDirPathOnLeftPanel;
 

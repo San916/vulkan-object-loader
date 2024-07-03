@@ -38,6 +38,8 @@ using namespace std;
 #endif
 
 #include "minimal.h"
+#include "VulkanCanvas.h"
+#include "VulkanCanvas.h"
 
 wxDECLARE_APP(MyApp);
 
@@ -70,9 +72,10 @@ extern MyFrame* frame;
 
 MyTreeCtrl::MyTreeCtrl(wxWindow* parent, const wxWindowID id,
     const wxPoint& pos, const wxSize& size,
-    long style, string rootParentDirPathOnLeftPanel, string rootNameOnly)
+    long style, string rootParentDirPathOnLeftPanel, string rootNameOnly, VulkanCanvas* vulkanCanvas)
     : wxTreeCtrl(parent, id, pos, size, style)
 {
+    this->vulkanCanvas = vulkanCanvas;
     this->rootNameOnly = rootNameOnly;
     this->rootParentDirPathOnLeftPanel = rootParentDirPathOnLeftPanel;
 
@@ -189,34 +192,6 @@ void MyTreeCtrl::recShowAllDir(string curDirPath, wxTreeItemId curRootID, int de
 
 void MyTreeCtrl::OnItemExpanded(wxTreeEvent& event) {
     //cout << "MyTreeCtrl::OnItemExpanded(): hello" << endl;
-    //cout << "MyTreeCtrl::OnItemExpanded(): curDirPathOnLeftPanel" << curDirPathOnLeftPanel << endl;
-}
-
-void MyTreeCtrl::refreshLowerLeftPanel(wxTreeItemId itemId, bool fromSelectItem) {
-
-    MyTreeItemData* itemData = (MyTreeItemData*)GetItemData(itemId);
-    cout << "MyTreeCtrl::refreshLowerLeftPanel(): itemData: |" << (int)itemData << "|" << endl;
-    cout << "MyTreeCtrl::refreshLowerLeftPanel(): itemData->fullPath: |" << itemData->fullPath.ToStdString() << "|" << endl;
-
-    if (!fromSelectItem) { // to prevent recursive(infinite loop) call when OnSelChanging() calls this function.
-        cout << "MyTreeCtrl::refreshLowerLeftPanel(): if (!fromSelectItem) {" << endl;
-        this->SelectItem(itemData);
-    }
-
-    cout << "MyTreeCtrl::refreshLowerLeftPanel(): hello1" << endl;
-
-    // Create the children trees of some element
-    if (itemId && this->ItemHasChildren(itemId)) {
-        cout << "MyTreeCtrl::refreshLowerLeftPanel(): if (itemId && this->ItemHasChildren(itemId)) {" << endl;
-
-        if (frame->makeLowerLeftPanel(itemData->fullPath.ToStdString())) {
-            cout << "MyTreeCtrl::refreshLowerLeftPanel(): if (frame->makeUpperRightPanel(fullPath)) {" << endl;
-
-            this->curDirPathOnLeftPanel = itemData->fullPath;
-        }
-        cout << "MyTreeCtrl::refreshLowerLeftPanel(): hello2" << endl;
-    }
-    cout << "MyTreeCtrl::refreshLowerLeftPanel(): hello3" << endl;
 }
 
 void MyTreeCtrl::OnItemExpanding(wxTreeEvent& event) {
@@ -234,8 +209,8 @@ void MyTreeCtrl::OnItemExpanding(wxTreeEvent& event) {
     cout << "MyTreeCtrl::OnItemExpanding(): itemId: |" << itemId << "|" << endl;
 
     MyTreeItemData* itemData = (MyTreeItemData*)GetItemData(itemId);
-    cout << "MyTreeCtrl::refreshLowerLeftPanel(): itemData: |" << (int)itemData << "|" << endl;
-    cout << "MyTreeCtrl::refreshLowerLeftPanel(): itemData->fullPath: |" << itemData->fullPath.ToStdString() << "|" << endl;
+    cout << "MyTreeCtrl::OnItemExpanding(): itemData: |" << (int)itemData << "|" << endl;
+    cout << "MyTreeCtrl::OnItemExpanding(): itemData->fullPath: |" << itemData->fullPath.ToStdString() << "|" << endl;
 
     if (itemData->childrenLoaded && itemData->grandChildrenLoaded) {
         cout << "MyTreeCtrl::OpenDirsFromPath(): if (itemData->grandChildrenLoaded) {" << endl;
@@ -256,9 +231,20 @@ void MyTreeCtrl::OnSelChanging(wxTreeEvent& event) {
     cout << "MyTreeCtrl::OnSelChanging(): hello" << endl;
 
     wxString label = event.GetLabel();
-    cout << "MyTreeCtrl::OnItemExpanding(): label: |" << label.ToStdString() << "|" << endl;
     wxTreeItemId itemId = (wxTreeItemId)event.GetItem();
-    cout << "MyTreeCtrl::OnItemExpanding(): itemId: |" << itemId << "|" << endl;
 
-    refreshLowerLeftPanel(itemId, true);
+    MyTreeItemData* itemData = (MyTreeItemData*)GetItemData(itemId);
+
+    DIR* dir;
+    if ((dir = opendir(itemData->fullPath.c_str())) != NULL) {
+        // when the fullPath is for a dir then dont open
+        closedir(dir);
+    }
+    else if (itemData->fullPath.substr(itemData->fullPath.size() - 4) == ".obj" || itemData->fullPath.substr(itemData->fullPath.size() - 8) == ".md5mesh") { // it is an object/md5 file so show it as an object
+        if (vulkanCanvas->m_objects.size() > 0) {
+            vulkanCanvas->ShowObject(itemData->fullPath.ToStdString(), true, true);
+        }
+    }
+
+    //ev.Skip();
 }

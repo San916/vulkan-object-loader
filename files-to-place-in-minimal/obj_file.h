@@ -15,18 +15,18 @@
 using namespace std;
 
 struct Color {
-    float r = 1.0;
-    float g = 1.0;
-    float b = 1.0;
+    float r = 1.0f;
+    float g = 1.0f;
+    float b = 1.0f;
 };
 struct TexCoord {
-    float u = 1.0;
-    float v = 1.0;
+    float u = 1.0f;
+    float v = 1.0f;
 };
 struct Position {
-    float x = 1.0;
-    float y = 1.0;
-    float z = 1.0;
+    float x = 1.0f;
+    float y = 1.0f;
+    float z = 1.0f;
 };
 
 struct MyVertex {
@@ -58,22 +58,22 @@ public:
 
 public:
     Material() {
-        diffuseCol.r = 0.8;
-        diffuseCol.g = 0.8;
-        diffuseCol.b = 0.8;
+        diffuseCol.r = 0.8f;
+        diffuseCol.g = 0.8f;
+        diffuseCol.b = 0.8f;
 
-        specularCol.r = 1.0;
-        specularCol.g = 1.0;
-        specularCol.b = 1.0;
+        specularCol.r = 1.0f;
+        specularCol.g = 1.0f;
+        specularCol.b = 1.0f;
 
-        ambientCol.r = 0.2;
-        ambientCol.g = 0.2;
-        ambientCol.b = 0.2;
+        ambientCol.r = 0.2f;
+        ambientCol.g = 0.2f;
+        ambientCol.b = 0.2f;
 
-        alpha = 1.0;
-        otherAlpha = 0.0;
+        alpha = 1.0f;
+        otherAlpha = 0.0f;
 
-        shininess = 0.0;
+        shininess = 0.0f;
     }
 };
 
@@ -98,16 +98,11 @@ public:
 	vector<string> mtlNames;
     vector<Material *> materials;
 
-    // for sorting transparency for bbox
-    int startOffsetInIndexBufferArray[3][3][3];
-    int numTrianglesShownIndexBufferArray[3][3][3];
-
 	ObjFile();
 	ObjFile(string objFilename);
 
     virtual ~ObjFile();
 
-    void loadBBox(string objFilename);
 	void loadObjFile(string objFilename);
 
 };

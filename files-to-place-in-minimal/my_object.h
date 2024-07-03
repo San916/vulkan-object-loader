@@ -20,16 +20,38 @@ public:
     bool drawObject;
 
     glm::vec3 offset3D;
+    glm::vec3 offset3DRot;
     glm::mat4 rotationMat;
 
     string sceneTreeName;
+    glm::vec3 translationVelocity;
+    glm::vec3 acceleration;
+    glm::quat quaternion;
+    glm::vec3 angularVelocity;
 
     glm::mat4 curModelMat; // this shouldnt be used by md5
     std::vector<VkBuffer> m_uniformBuffers; // added
     std::vector<VkDeviceMemory> m_uniformBuffersMemory; // added
 
+
+    // Physics related
+    std::vector<glm::vec3> boundingBox;
+    std::vector<int> boundingBoxIndices;
+    std::vector<int*>boundingBoxFaces;
+    std::vector<int> verticesOnGround;
+    glm::vec3 centerOfMass;
+    float boundingBoxVolume;
+    float objectDensity;
+    glm::vec3 forceNet;
+    bool freeFall;
+    float momentOfInertia;
+
     GameObject();
     virtual ~GameObject();
+
+    glm::vec4 transformCenterOfMass(glm::mat4 rotMat);
+    std::vector<glm::vec3> transformBoundingBox(glm::mat4 rotMat);
+    void createBoundingBox();
 
     virtual bool isObjFile();
     virtual bool isMD5File();
@@ -67,7 +89,9 @@ public:
 public:
     MyObject();
     MyObject(string objFilename);
+    //glm::vec4 transformCenterOfMass(glm::mat4 rotMat);
     bool isObjFile();
+    void createBoundingBox();
 };
 
 class MyMD5Object : public GameObject {
@@ -82,6 +106,8 @@ public:
 
     MyMD5Object();
     MyMD5Object(std::string md5Filename);
+
+    void createBoundingBox();
 
     bool isMD5File();
 };

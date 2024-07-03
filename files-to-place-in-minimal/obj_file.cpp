@@ -72,14 +72,6 @@ ObjFile::~ObjFile() {
     std::cout << "ObjFile::~ObjFile() <xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" << endl;
 }
 
-void ObjFile::loadBBox(string objFilename) {
-    std::cout << "ObjFile::loadBBox(...) <~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << endl;
-
-    loadObjFile(objFilename); // load bbox
-
-    std::cout << "ObjFile::loadBBox(...) <xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" << endl;
-}
-
 void ObjFile::loadObjFile(string objFilename) {
     std::cout << "ObjFile::loadObjFile(...) <~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << endl;
 
