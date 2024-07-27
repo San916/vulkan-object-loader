@@ -1,5 +1,5 @@
 # Vulkan Object Loader
-An object loader capable of loading 3D objects and animations using Vulkan.
+An object loader capable of loading 3D objects and animations using Vulkan. Contains a physics engine built from scratch.
 
 Overview
 --------
